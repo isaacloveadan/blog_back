@@ -7,24 +7,31 @@ var connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
   password: 'zht921205',
-  database: 'world',
+  database: 'blog',
   port: 3306,
 })
 // 数据库连接
 connection.connect();
 
 /* GET users listing. */
-router.get('/', function(req, res, next) {
-  connection.query('SELECT * FROM city', function(err, result, fields) {
+router.post('/login', function(req, res, next) {
+  const username = req.body.username;
+  const password = req.body.password;
+  connection.query('SELECT password FROM users WHERE username = ?', [username], function(err, result, fields) {
     if (err) {
-      throw error;
+      res.status(500);
+      res.send(err);
     }
-    console.log(result);
+    const string = JSON.stringify(result);
+    const data = JSON.parse(string);
+    if (data[0].password.toString() === password.toString()) {
+      res.status(200);
+      res.send({result: true, message: '登录成功'});
+    } else {
+      res.status(400);
+      res.send({result: false, message: '密码错误'})
+    }
   })
-  res.send('respond with a resource');
 });
-router.get('/abc', function(req, res, next) {
-  res.send('123');
-})
 
 module.exports = router;
