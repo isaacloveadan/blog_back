@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var menusRouter = require('./routes/menus');
 
 var app = express();
 
@@ -35,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // 路由匹配
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/menus', menusRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
