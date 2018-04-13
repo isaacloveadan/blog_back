@@ -1,6 +1,7 @@
 var express = require('express');
 var mysql = require('mysql');
 var router = express.Router();
+var { formatResult } = require('../public/javascripts/formatResult');
 
 // 数据库配置
 var connection = mysql.createConnection({
@@ -23,9 +24,7 @@ router.post('/login', function(req, res, next) {
       res.status(500);
       res.send(err);
     }
-    const string = JSON.stringify(result);
-    const data = JSON.parse(string);
-    console.log(data);
+    const data = formatResult(result);
     if (data.length > 0) {
       if (data[0].password.toString() === password.toString()) {
         connection.query('SELECT id FROM users WHERE username = ?', [username], function(err2, result2, fields2) {
@@ -33,8 +32,7 @@ router.post('/login', function(req, res, next) {
             res.status(500);
             res.send(err2);
           }
-          const string2 = JSON.stringify(result2);
-          const data2 = JSON.parse(string2);
+          const data2 = formatResult(result2);
           res.status(200);
           res.send({result: true, message: '登录成功', id: data2[0].id});
         })
@@ -58,8 +56,7 @@ router.post('/register', function (req, res, next) {
       res.status(500);
       res.send(err);
     }
-    const string = JSON.stringify(result);
-    const data = JSON.parse(string);
+    const data = formatResult(result);
     if (data.length > 0) {
       res.status(400);
       res.json({result: false, message: '已存在该用户'});
@@ -80,8 +77,7 @@ router.post('/register', function (req, res, next) {
 router.get('/getUser', function(req, res, next) {
   const id = req.query.id;
   connection.query('SELECT username FROM users WHERE id = ?', [id], function (err, result, fields) { 
-    const string = JSON.stringify(result);
-    const data = JSON.parse(string);
+    const data = formatResult(result);
     if (err) {
       res.status(500);
       res.send(err);
