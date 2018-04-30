@@ -7,7 +7,7 @@ var { formatResult } = require('../public/javascripts/formatResult');
 var connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'zht921205',
+  password: '',
   database: 'blog',
   port: 3306,
 })

@@ -9,7 +9,7 @@ var { formatResult } = require('../public/javascripts/formatResult');
 var connection = mysql.createConnection({
   host: '127.0.0.1',
   user: 'root',
-  password: 'zht921205',
+  password: '',
   database: 'blog',
   port: 3306,
 })
@@ -54,7 +54,7 @@ router.get('/list', function(req, res, next) {
 router.post('/newList', function (req, res, next) { 
   const randomTxt = Math.random().toString(36).substr(2);
   const content = req.body.content;
-  const contentUrl = `C:/Users/isaac/Desktop/work/MyBlog/docs/${randomTxt}.txt`;
+  const contentUrl = `/users/zhenghaotian/documents/blogDocs/${randomTxt}.txt`;
   fs.writeFile(contentUrl, content, function(err) {
     if (err) {
       res.status(500);
